@@ -9,8 +9,10 @@ import {
 import { FlexboxSpacer } from "components/FlexboxSpacer";
 import { useAppSelector, useAppDispatch } from "lib/redux/hooks";
 import { selectResume, setResume } from "lib/redux/resumeSlice";
-import { selectSettings } from "lib/redux/settingsSlice";
-import { Resume as ResumeType } from "lib/redux/types";
+import { selectSettings, setSettings, Settings as SettingsType } from "lib/redux/settingsSlice";
+import {
+  Resume as ResumeType,
+} from "lib/redux/types";
 import { DEBUG_RESUME_PDF_FLAG } from "lib/constants";
 import {
   useRegisterReactPDFFont,
@@ -58,6 +60,10 @@ export const Resume = () => {
             fileName={resume.profile.name + " - Resume"}
             resume={resume}
             setResume={(newResume: ResumeType) => dispatch(setResume(newResume))}
+            settings={settings}
+            setSettings={(newSettings: SettingsType) =>
+              dispatch(setSettings(newSettings))
+            }
           />
         </div>
         <ResumeControlBarBorder />

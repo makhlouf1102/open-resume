@@ -9,6 +9,7 @@ import {
 import { usePDF } from "@react-pdf/renderer";
 import dynamic from "next/dynamic";
 import { Resume } from "lib/redux/types";
+import { Settings } from "lib/redux/settingsSlice";
 
 const ResumeControlBar = ({
   scale,
@@ -18,6 +19,8 @@ const ResumeControlBar = ({
   fileName,
   resume,
   setResume,
+  settings,
+  setSettings,
 }: {
 
 
@@ -28,6 +31,8 @@ const ResumeControlBar = ({
   fileName: string;
   resume: Resume;
   setResume: (resume: Resume) => void;
+  settings: Settings;
+  setSettings: (settings: Settings) => void;
 }) => {
   const { scaleOnResize, setScaleOnResize } = useSetDefaultScale({
     setScale,
@@ -52,7 +57,12 @@ const ResumeControlBar = ({
     reader.onload = (e) => {
       try {
         const json = JSON.parse(e.target?.result as string);
-        setResume(json);
+        if (json.resume && json.settings) {
+          setResume(json.resume);
+          setSettings(json.settings);
+        } else {
+          setResume(json);
+        }
       } catch (error) {
         console.error("Failed to parse resume JSON:", error);
       }
@@ -110,7 +120,7 @@ const ResumeControlBar = ({
           <a
             className="flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-colors"
             href={`data:text/json;charset=utf-8,${encodeURIComponent(
-              JSON.stringify(resume, null, 2)
+              JSON.stringify({ resume, settings }, null, 2)
             )}`}
             download={`${fileName}.json`}
             title="Download JSON"
