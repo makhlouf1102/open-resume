@@ -1,9 +1,10 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useSetDefaultScale } from "components/Resume/hooks";
 import {
   MagnifyingGlassIcon,
   ArrowDownTrayIcon,
+  ArrowUpTrayIcon,
 } from "@heroicons/react/24/outline";
 import { usePDF } from "@react-pdf/renderer";
 import dynamic from "next/dynamic";
@@ -16,7 +17,9 @@ const ResumeControlBar = ({
   document,
   fileName,
   resume,
+  setResume,
 }: {
+
 
   scale: number;
   setScale: (scale: number) => void;
@@ -24,6 +27,7 @@ const ResumeControlBar = ({
   document: JSX.Element;
   fileName: string;
   resume: Resume;
+  setResume: (resume: Resume) => void;
 }) => {
   const { scaleOnResize, setScaleOnResize } = useSetDefaultScale({
     setScale,
@@ -36,6 +40,28 @@ const ResumeControlBar = ({
   useEffect(() => {
     update();
   }, [update, document]);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleImport = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      try {
+        const json = JSON.parse(e.target?.result as string);
+        setResume(json);
+      } catch (error) {
+        console.error("Failed to parse resume JSON:", error);
+      }
+    };
+
+    reader.readAsText(file);
+    // Reset input so the same file can be selected again if needed
+    event.target.value = "";
+  };
 
   return (
     <div className="sticky bottom-0 left-0 right-0 flex h-[var(--resume-control-bar-height)] items-center justify-center px-[var(--resume-padding)] text-gray-600 lg:justify-between">
@@ -73,7 +99,6 @@ const ResumeControlBar = ({
       </a>
       <a
         className="ml-1 flex items-center gap-1 rounded-md border border-gray-300 px-3 py-0.5 hover:bg-gray-100 lg:ml-8"
-
         href={`data:text/json;charset=utf-8,${encodeURIComponent(
           JSON.stringify(resume, null, 2)
         )}`}
@@ -82,6 +107,17 @@ const ResumeControlBar = ({
         <ArrowDownTrayIcon className="h-4 w-4" />
         <span className="whitespace-nowrap">Download Resume as JSON</span>
       </a>
+      <label className="ml-1 flex cursor-pointer items-center gap-1 rounded-md border border-gray-300 px-3 py-0.5 hover:bg-gray-100 lg:ml-2">
+        <ArrowUpTrayIcon className="h-4 w-4" />
+        <span className="whitespace-nowrap">Import from JSON</span>
+        <input
+          ref={fileInputRef}
+          type="file"
+          className="hidden"
+          accept=".json"
+          onChange={handleImport}
+        />
+      </label>
     </div>
   );
 };
