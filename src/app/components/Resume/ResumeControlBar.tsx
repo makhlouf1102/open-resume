@@ -7,6 +7,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { usePDF } from "@react-pdf/renderer";
 import dynamic from "next/dynamic";
+import { Resume } from "lib/redux/types";
 
 const ResumeControlBar = ({
   scale,
@@ -14,12 +15,15 @@ const ResumeControlBar = ({
   documentSize,
   document,
   fileName,
+  resume,
 }: {
+
   scale: number;
   setScale: (scale: number) => void;
   documentSize: string;
   document: JSX.Element;
   fileName: string;
+  resume: Resume;
 }) => {
   const { scaleOnResize, setScaleOnResize } = useSetDefaultScale({
     setScale,
@@ -65,7 +69,18 @@ const ResumeControlBar = ({
         download={fileName}
       >
         <ArrowDownTrayIcon className="h-4 w-4" />
-        <span className="whitespace-nowrap">Download Resume</span>
+        <span className="whitespace-nowrap">Download Resume as PDF</span>
+      </a>
+      <a
+        className="ml-1 flex items-center gap-1 rounded-md border border-gray-300 px-3 py-0.5 hover:bg-gray-100 lg:ml-8"
+
+        href={`data:text/json;charset=utf-8,${encodeURIComponent(
+          JSON.stringify(resume, null, 2)
+        )}`}
+        download={`${fileName}.json`}
+      >
+        <ArrowDownTrayIcon className="h-4 w-4" />
+        <span className="whitespace-nowrap">Download Resume as JSON</span>
       </a>
     </div>
   );
