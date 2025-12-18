@@ -108,6 +108,7 @@ const ResumeControlBar = ({
           className="ml-1 flex items-center gap-1 rounded-md border border-gray-300 px-3 py-0.5 hover:bg-gray-100 lg:ml-8"
           href={instance.url!}
           download={fileName}
+          title="Download PDF"
         >
           <ArrowDownTrayIcon className="h-4 w-4" />
           <span className="whitespace-nowrap">Download Resume</span>
@@ -119,14 +120,15 @@ const ResumeControlBar = ({
             JSON.stringify({ resume, settings }, null, 2)
           )}`}
           download={`${fileName}.json`}
+          title="Download Config"
         >
           <ArrowDownTrayIcon className="h-4 w-4" />
-          <span className="whitespace-nowrap">JSON</span>
+          <span className="whitespace-nowrap">Config</span>
         </a>
 
-        <label className="flex cursor-pointer items-center gap-1 rounded-md border border-gray-300 px-3 py-0.5 hover:bg-gray-100">
+        <label className="flex cursor-pointer items-center gap-1 rounded-md border border-gray-300 px-3 py-0.5 hover:bg-gray-100" title="Import Config">
           <ArrowUpTrayIcon className="h-4 w-4" />
-          <span className="whitespace-nowrap">Import</span>
+          <span className="whitespace-nowrap">Import Config</span>
           <input
             ref={fileInputRef}
             type="file"
