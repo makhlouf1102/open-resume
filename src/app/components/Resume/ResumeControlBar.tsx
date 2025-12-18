@@ -104,43 +104,37 @@ const ResumeControlBar = ({
       </div>
 
       <div className="flex items-center gap-2 sm:gap-4">
-        <div className="flex items-center gap-2 border-r border-gray-200 pr-2 sm:pr-4">
-          <a
-            className="flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-colors"
-            href={instance.url!}
-            download={fileName}
-            title="Download PDF"
-          >
-            <ArrowDownTrayIcon className="h-4 w-4" />
-            <span className="hidden sm:inline">PDF</span>
-          </a>
-        </div>
+        <a
+          className="ml-1 flex items-center gap-1 rounded-md border border-gray-300 px-3 py-0.5 hover:bg-gray-100 lg:ml-8"
+          href={instance.url!}
+          download={fileName}
+        >
+          <ArrowDownTrayIcon className="h-4 w-4" />
+          <span className="whitespace-nowrap">Download Resume</span>
+        </a>
 
-        <div className="flex items-center gap-2">
-          <a
-            className="flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-colors"
-            href={`data:text/json;charset=utf-8,${encodeURIComponent(
-              JSON.stringify({ resume, settings }, null, 2)
-            )}`}
-            download={`${fileName}.json`}
-            title="Download JSON"
-          >
-            <ArrowDownTrayIcon className="h-4 w-4" />
-            <span className="hidden sm:inline">JSON</span>
-          </a>
+        <a
+          className="flex items-center gap-1 rounded-md border border-gray-300 px-3 py-0.5 hover:bg-gray-100"
+          href={`data:text/json;charset=utf-8,${encodeURIComponent(
+            JSON.stringify({ resume, settings }, null, 2)
+          )}`}
+          download={`${fileName}.json`}
+        >
+          <ArrowDownTrayIcon className="h-4 w-4" />
+          <span className="whitespace-nowrap">JSON</span>
+        </a>
 
-          <label className="flex cursor-pointer items-center gap-1.5 rounded-md bg-gray-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-gray-700 transition-colors shadow-sm" title="Import JSON">
-            <ArrowUpTrayIcon className="h-4 w-4" />
-            <span className="hidden sm:inline">Import</span>
-            <input
-              ref={fileInputRef}
-              type="file"
-              className="hidden"
-              accept=".json"
-              onChange={handleImport}
-            />
-          </label>
-        </div>
+        <label className="flex cursor-pointer items-center gap-1 rounded-md border border-gray-300 px-3 py-0.5 hover:bg-gray-100">
+          <ArrowUpTrayIcon className="h-4 w-4" />
+          <span className="whitespace-nowrap">Import</span>
+          <input
+            ref={fileInputRef}
+            type="file"
+            className="hidden"
+            accept=".json"
+            onChange={handleImport}
+          />
+        </label>
       </div>
     </div>
   );
